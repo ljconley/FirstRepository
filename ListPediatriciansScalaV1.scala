@@ -57,8 +57,8 @@ object ListPediatriciansScalaV1
     val filename = "npidata_20050523-20150308.csv"
     val LoadingValue = 84062
     //variables
-    var zip ="bad"
-    var state ="news"
+    var zip =""
+    var state =""
     var AllZips = scala.collection.mutable.ListBuffer.empty[String]
     var FinalZips = scala.collection.mutable.ListBuffer.empty[String]
     var v = 1
