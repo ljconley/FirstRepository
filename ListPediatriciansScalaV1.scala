@@ -38,6 +38,7 @@
  * Improve readability
  * Better Comments
  * Use case statements instead of if statements
+ * Use parameters to get filename
 */
 
 //Import statements
