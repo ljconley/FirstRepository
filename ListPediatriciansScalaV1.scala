@@ -23,7 +23,7 @@
  */
 
 /* This program is only meant to function with the databases given in the assignment, 
- * If different databases are used "LoadingValue" on line 48 must be changed for loading bar to function
+ * If different databases are used "LoadingValue" on line 59 must be changed for loading bar to function
  * Output text file should still be created
  * 
  * This program has the following features not in the assignment description:
