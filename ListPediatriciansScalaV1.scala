@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------------
+ /*---------------------------------------------------------------------------------
  * Assignment #1.5
  * 
  * The next assignment is #1.5 and it is to redo assignment #1 but with using Python as the programming language.
@@ -37,7 +37,6 @@
 /* To Do: 
  * Improve readability
  * Better Comments
- * Use case statements instead of if statements
  * Use parameters to get filename
 */
 
@@ -46,65 +45,56 @@ import scala.io.Source
 import java.io._
 
 // ListPediatriciansScalaV1
-object ListPediatriciansScalaV1
+object ListPediatriciansScalaV1Copy
 { 
-  /* main
-   * Write pediatricians sorted by zip code array 
+  //values
+  val filename = "npidata_20050523-20150308.csv"
+  val LoadingValue = 84062
+  //variables
+  var zip =""
+  var state =""
+  var FinalZips = scala.collection.mutable.ListBuffer.empty[String]
+  var AllZips = scala.collection.mutable.ListBuffer.empty[String]  
+  var v = 1   
+  /* Write pediatricians array sorted by zip code 
    * titled FinalZips to text file additional with additional file header
    */
   def main(args: Array[String]) 
   {
-    //values
-    val filename = "npidata_20050523-20150308.csv"
-    val LoadingValue = 84062
-    //variables
-    var zip =""
-    var state =""
-    var AllZips = scala.collection.mutable.ListBuffer.empty[String]
-    var FinalZips = scala.collection.mutable.ListBuffer.empty[String]
-    var v = 1
-     
-      // for each line in file
-      for (line <- Source.fromFile(filename).getLines()) 
-      {
-        
-        val CurrentLine = line.split(",")
-        
-        /* if line contains a taxonomy code that corresponds to pediatrician, 
-         * a state code that is two characters long 
-         * and a zip code that is a number of at least a 5 digits in the business or mailing address
-         * then add the information to an array. Also create separate array containing zip codes and
-         * the number of times they appeared in the first array.
-         * 
-         * Note: Need to rewrite this if statement as a case statement
-        */
-        if (
-            4<=CurrentLine(47).replace("\"", "").length
-            &&CurrentLine(47).replace("\"", "").substring(0, 4) == "2080"
-            &&CurrentLine(23).replace("\"", "").length == 2
-            &&CurrentLine(24).replace("\"", "").matches("\\d+")
-            &&CurrentLine(24).length() > 5 
-            )
-        {
-          zip =(CurrentLine(24).replace("\"", "").substring(0, 5))
-          state =(CurrentLine(23).replace("\"", ""))
-          AllZips+=(zip+"|?|"+state)
-          FinalZips+=(zip+"|"+(AllZips.count(_ == zip+"|?|"+state))+"|"+state+"\n")
-          FinalZips-=(zip+"|"+((AllZips.count(_ == zip+"|?|"+state))-1)+"|"+state+"\n")
-          v+=1
-          println(v * 100 / LoadingValue+"%")
-          //print statement below is for testing purposes
-          /*
-          println("    "+v +" of "+LoadingValue+
-              "    "+v * 100 / LoadingValue+"%"+"    "+zip+"|"+(AllZips.count(_ == zip+"|?|"+state))+"|"+state
-              +"    taxonomy code:"+CurrentLine(47)+"    zip:"+CurrentLine(24))
-          */
-        }
+   /* if line contains a taxonomy code that corresponds to pediatrician, 
+   *  a state code that is two characters long 
+   *  and a zip code that is a number of at least a 5 digits in the business or mailing address
+   *  then add the information to an array. Also create separate array containing zip codes and
+   *  the number of times they appeared in the first array
+   */
+    for {line: String <- Source.fromFile(filename).getLines() 
+      if 4<=line.split(",")(47).replace("\"", "").length 
+      if line.split(",")(47).replace("\"", "").substring(0, 4) == "2080"
+      if line.split(",")(23).replace("\"", "").length == 2
+      if line.split(",")(24).replace("\"", "").matches("\\d+")  
+      if line.split(",")(24).length() > 5 
+      }
+    {
+      //variables
+      var Zip = line.split(",")(24).replace("\"", "")
+      var state= line.split(",")(23).replace("\"", "")
+      var TaxonomyCode = line.split(",")(47).replace("\"", "")
+      var shortZip = Zip.substring(0, 5)
+      var TotalZips = AllZips.count(_ == shortZip+"|?|"+state)
+      
+      AllZips+=shortZip+"|?|"+state
+      FinalZips+=shortZip++"|"+(TotalZips)+"|"+state+"\n"
+      FinalZips-=shortZip++"|"+(TotalZips-1)+"|"+state+"\n"
+      v+=1
+      println((v * 100 / LoadingValue)+"%"+"    ")
+      //print statement below is for testing purposes
+      //println(v +" of "+LoadingValue+"   "+(v * 100 / LoadingValue)+"%"+"    "
+      //+shortZip+"|"+TotalZips+"|"+state+"    taxonomy code:"+TaxonomyCode+"    zip:"+Zip)
       }
     println("-----------end file--------------")
     val pw = new PrintWriter(new File("PediatriciansByZip.txt" ))
     pw.write("Zip Code|Count|State Code"+"\n")
     FinalZips.sorted.foreach{pw.write}
     pw.close
+    }
   }
-}
