@@ -38,6 +38,7 @@
  * Improve readability
  * Better Comments
  * Use parameters to get filename
+ * look into external libraries
 */
 
 //Import statements
@@ -45,7 +46,7 @@ import scala.io.Source
 import java.io._
 
 // ListPediatriciansScalaV1
-object ListPediatriciansScalaV1Copy
+object ListPediatriciansScalaV1
 { 
   //values
   val filename = "npidata_20050523-20150308.csv"
